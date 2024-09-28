@@ -1,7 +1,7 @@
 let lastX, lastY;
 let droplets = [];
 let c;
-const points = [
+let points = [
   [
       220.65765561662516,
       543.9728841619044,
@@ -2054,10 +2054,7 @@ function updateDroplets() {
   }
 }
 
-function keyPressed() {
-  if (key === ' ') {
-    background(220);
-    droplets = [];
-    points = svgPathToPoints(svgPath); // Reset points on space
-  }
+function mouseClicked() {
+  background(255)
+  droplets = []
 }
