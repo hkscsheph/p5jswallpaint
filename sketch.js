@@ -1,5 +1,6 @@
 let lastX, lastY;
 let droplets = [];
+let c;
 const points = [
   [
       220.65765561662516,
@@ -1953,6 +1954,7 @@ function setup() {
   background(255);
   noFill();
   lastX = lastY = 0;
+  c = color('#000')
 }
 
 let currentPointIndex = 0; // Track the current point index
@@ -1962,20 +1964,25 @@ function draw() {
   // Only draw if there are points available
   if (points.length > 0) {
     // Draw one segment at a time
-    if (frameCount % drawInterval === 0 && currentPointIndex < points.length - 1) {
-      drawBrush(
-        points[currentPointIndex][0], 
-        points[currentPointIndex][1], 
-        points[currentPointIndex + 1][0], 
-        points[currentPointIndex + 1][1],
-        points[currentPointIndex][2], 
-      );
+    if (frameCount % drawInterval === 0) {
+      if ((currentPointIndex % points.length) > 5) {
+        drawBrush(
+          points[(currentPointIndex) % points.length][0], 
+          points[(currentPointIndex) % points.length][1], 
+          points[(currentPointIndex + 1) % points.length][0], 
+          points[(currentPointIndex + 1) % points.length][1],
+          points[(currentPointIndex) % points.length][2], 
+        );
+      }
       currentPointIndex++; // Move to the next segment
+      if ((currentPointIndex % points.length) === 0) {
+        c = color(random(255), random(255), random(255))
+      } else {
+        // Update and draw droplets
+        updateDroplets();
+      }
     }
   }
-  
-  // Update and draw droplets
-  updateDroplets();
 }
 
 
@@ -2000,7 +2007,8 @@ function drawBrush(x1, y1, x2, y2, offset = 4) {
       let endX = startX + cos(angle) * bristleLength;
       let endY = startY + sin(angle) * bristleLength;
       
-      stroke(0, 0, 0, random(40, 80));
+      c.setAlpha(random(40, 80))
+      stroke(c);
       strokeWeight(random(8, 15));
       line(startX, startY, endX, endY);
       
@@ -2012,7 +2020,8 @@ function drawBrush(x1, y1, x2, y2, offset = 4) {
           size: random(2, 5),
           speed: random(0.1, 0.3),
           viscosity: random(0.97, 0.99),
-          opacity: random(15, 40)
+          opacity: random(15, 40),
+          color: c
         });
       }
     }
@@ -2022,7 +2031,8 @@ function drawBrush(x1, y1, x2, y2, offset = 4) {
 function updateDroplets() {
   for (let i = droplets.length - 1; i >= 0; i--) {
     let droplet = droplets[i];
-    stroke(0, 0, 0, droplet.opacity);
+    droplet.color.setAlpha(droplet.opacity)
+    stroke(droplet.color);
     strokeWeight(droplet.size);
     
     let curve = sin(frameCount * 0.05 + droplet.x * 0.05) * 0.5;
