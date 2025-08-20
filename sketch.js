@@ -3465,3 +3465,9 @@ function mouseClicked() {
   c = color(random(255), random(255), random(255))
   droplets = []
 }
+
+function keyPressed() {
+  graph = (graph + 1) % 2;
+  c = color(random(255), random(255), random(255));
+  droplets = [];
+}
