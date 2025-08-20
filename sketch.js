@@ -1,6 +1,7 @@
 let lastX, lastY;
 let droplets = [];
 let c;
+let ratio;
 let points = [//https://shinao.github.io/PathToPoints/
   [//Swan
     [
@@ -3359,7 +3360,8 @@ let points = [//https://shinao.github.io/PathToPoints/
 let graph = 0
 
 function setup() {
-  createCanvas(600, 600);
+  ratio = Math.min(windowWidth, windowHeight)/600
+  createCanvas(600*ratio, 600*ratio);
   background(255);
   noFill();
   lastX = lastY = 0;
@@ -3396,6 +3398,10 @@ function drawBrush(x1, y1, x2, y2, offset = 4) {
   let bristleCount = 15;
   let bristleLength = 30 / offset * 4;
   let brushWidth = 45;
+  x1 *= ratio;
+  x2 *= ratio;
+  y1 *= ratio;
+  y2 *= ratio;
   
   for (let i = 0; i < bristleCount; i++) {
     let t = i / (bristleCount - 1);
