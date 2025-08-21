@@ -3362,7 +3362,7 @@ let graph = 0
 function setup() {
   ratio = Math.min(windowWidth, windowHeight)/600
   createCanvas(600*ratio, 600*ratio);
-  background(255);
+  background(0);
   noFill();
   lastX = lastY = 0;
   c = color('#000')
@@ -3473,6 +3473,12 @@ function mouseClicked() {
 }
 
 function keyPressed() {
+  graph = (graph + 1) % 2;
+  c = color(random(255), random(255), random(255));
+  droplets = [];
+}
+
+function touchStarted() {
   graph = (graph + 1) % 2;
   c = color(random(255), random(255), random(255));
   droplets = [];
